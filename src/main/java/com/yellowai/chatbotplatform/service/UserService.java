@@ -1,7 +1,7 @@
 package com.yellowai.chatbotplatform.service;
 
-import com.yellowai.chatbotplatform.dto.LoginRequest;
-import com.yellowai.chatbotplatform.dto.RegisterRequest;
+import com.yellowai.chatbotplatform.dto.RegisterRequestDto;
+import com.yellowai.chatbotplatform.entity.Role;
 import com.yellowai.chatbotplatform.entity.User;
 import com.yellowai.chatbotplatform.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,31 +13,23 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // 🔹 Constructor (already exists)
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 🔹 REGISTER METHOD (already exists)
-    public void register(RegisterRequest request) {
+    public User register(RegisterRequestDto request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
 
         User user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.valueOf(request.getRole()));
 
-        userRepository.save(user);
-    }
-
-    // 🔥 ADD LOGIN METHOD HERE (THIS IS THE ANSWER)
-    public void login(LoginRequest request) {
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
+        return userRepository.save(user);
     }
 }

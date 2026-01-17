@@ -17,12 +17,12 @@ public class JwtUtil {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
-    // 🔑 Generate signing key from raw bytes
+    //  Generate signing key from raw bytes
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    // 🔐 Generate JWT token
+    //  Generate JWT token
     public String generateToken(String email) {
 
         return Jwts.builder()
@@ -33,7 +33,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 🔍 Extract username/email from token
+    //  Extract username/email from token
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -43,7 +43,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // ✅ Validate token (THIS FIXES YOUR ERROR)
+    //  Validate token
     public boolean isTokenValid(String token, UserDetails userDetails) {
 
         String username = extractUsername(token);

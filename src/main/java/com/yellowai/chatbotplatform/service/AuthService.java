@@ -30,9 +30,9 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /* -------------------------------
+    /*
        LOGIN
-       ------------------------------- */
+        */
     public Map<String, String> login(LoginRequestDto request) {
 
         authenticationManager.authenticate(
@@ -50,9 +50,9 @@ public class AuthService {
         return response;
     }
 
-    /* -------------------------------
+    /*
        REGISTER  ✅ FIXED
-       ------------------------------- */
+        */
     public Map<String, String> register(RegisterRequestDto request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -63,7 +63,7 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 🔑 FIXED ENUM USAGE
+
         user.setRole(Role.valueOf(request.getRole().toUpperCase()));
 
         userRepository.save(user);

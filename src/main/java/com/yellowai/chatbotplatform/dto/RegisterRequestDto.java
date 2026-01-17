@@ -2,23 +2,18 @@ package com.yellowai.chatbotplatform.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 public class RegisterRequestDto {
 
-    @Email(message = "Email must be valid")
-    @NotBlank(message = "Email is required")
+    @Email
+    @NotBlank
     private String email;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @NotBlank
     private String password;
 
-    @NotBlank(message = "Role is required")
+    @NotBlank
     private String role;
-
-    public RegisterRequestDto() {
-    }
 
     public String getEmail() {
         return email;
